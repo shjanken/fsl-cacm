@@ -13,15 +13,21 @@
                             [pandeiro/boot-http "0.8.3"]
                             [ring/ring-jetty-adapter "1.6.3"] ; for main class. java -jar
                             [clj-time "0.14.2"]
+                            [mount "0.1.12"]
+                            [ring/ring-json "0.4.0"]
+                            [ring-cors "0.1.11"]
 
                             ;; for database
                             [org.clojure/java.jdbc "0.7.5"]
-                            [com.oracle/ojdbc8 "8"]
+                            [com.oracle/ojdbc "6.0"]
+                            [cheshire "5.8.0"]
 
                             ;; for test
                             [midje "1.9.1" :socpe "test"]
+                            ;; [metosin/bat-test "0.4.0"]
                             [com.h2database/h2 "1.4.196" :scope "test"]
-                            [ragtime "0.7.2" :scope "test"] ; for migration data
+                            [ragtime "0.7.2" :scope "test"] ; for migration database
+                            [ring/ring-mock "0.3.2"]
                             ])
 
 (require '[pandeiro.boot-http :refer :all])
@@ -37,13 +43,13 @@
  jar {:main        'fsl-cacm.core
       :file        (str "fsl-cacm-" version "-standalone.jar")}
 
- serve {:handler 'fsl-cacm.handlers/handler
+ serve {:handler 'fsl-cacm.handlers/app
         :reload true
         :port 3000})
 
 (deftask build
   "Build the project locally as a JAR."
-  [d dir PATH #{str} "the set of directories to write to (target)."]
+  [D dir PATH #{str} "the set of directories to write to (target)."]
   (let [dir (if (seq dir) dir #{"target"})]
     (comp (aot) (pom) (uber) (jar) (target :dir dir))))
 
@@ -60,3 +66,20 @@ The server will reload when code changed."
   (comp
    (serve)
    (watch)))
+
+;; (require '[clojure.java.jdbc :refer [query]])
+;; (require '[mount.core :refer [defstate] :as mount])
+;; (require '[ragtime.jdbc :as rjdbc])
+;; (require '[ragtime.repl :as rag])
+;; (deftask use-mock-db
+;;   "use mock db to test"
+;;   []
+;;   (let [h2-spec {:classname "org.h2.Driver"
+;;                  :subprotocol "h2"
+;;                  :subname "./resources/testdb.h2"}
+;;         query-fn (fn [] (query h2-spec ["select * from jyyb"]))
+;;         config {:datastore (rjdbc/sql-database h2-spec)
+;;                 :migrations (rjdbc/load-resources "migrations")}]
+;;     (rag/migrate config)
+;;     (mount/start-with-states {#'fsl-cacm.db/db-query-data
+;;                               {:start #(query-fn)}})))
