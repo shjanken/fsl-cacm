@@ -26,7 +26,6 @@
     (is (= (:status res2) 200)))
   (. (file "./resources/data/01-2018-2.json") delete))
 
-
 (comment
   (app (mock/request :get "/data/json/01?year=2018&month=1"))
   (app (mock/request :put "/data/json/01?year=2018&month=1"))

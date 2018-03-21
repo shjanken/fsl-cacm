@@ -6,4 +6,4 @@
 (deftest query-data-from-product-database
   (let [result (query-data "01" "2018" "2")]
     (is (= (count result) 39))
-    (is (= (:jyje (first result)) 44097.91M))))
+    (is (= (:jyje (first result)) 44087.91M))))

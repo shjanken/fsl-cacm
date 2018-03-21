@@ -29,7 +29,7 @@
         config {:datastore (rjdbc/sql-database h2-spec)
                 :migrations (rjdbc/load-resources "migrations")}]
     (mount/stop)
-    (rag/migrate config)))
+    (rag/rollback config)))
 
 
 (defn h2-spec

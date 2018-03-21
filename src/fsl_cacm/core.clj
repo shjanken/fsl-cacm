@@ -1,12 +1,12 @@
 (ns fsl-cacm.core
-  (:require [fsl-cacm.handlers :refer [handler]]
+  (:require [fsl-cacm.handlers :refer [app]]
             [ring.adapter.jetty :refer [run-jetty]])
   (:gen-class))
 
 (defn -main
   "run the web server"
   [& args]
-  (run-jetty handler {:port 3000}))
+  (run-jetty app {:port 3000 :host "10.0.0.201"}))
 
 (defn get-resource-dir
   []
