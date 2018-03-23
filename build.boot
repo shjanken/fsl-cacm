@@ -73,31 +73,31 @@ The server will reload when code changed."
   (comp
    (test :exclusions #{'fsl-cacm.db-test.product})))
 
-(require '[clojure.java.jdbc :as jdbc])
-(require '[ragtime.jdbc :as rjdbc])
-(require '[ragtime.repl :as rag])
-(require '[mount.core :as mount])
-(require '[clojure.test :refer [run-all-tests]])
-(require '[fsl-cacm.db-test])
-(require '[fsl-cacm.handlers-test])
-(require '[fsl-cacm.core-test])
-(require '[fsl-cacm.io-test])
-(deftask test-with-mock-database
-  "Test with mock database."
-  []
-  (let [h2-spec {:classname "org.h2.Driver"
-                :subprotocol "h2"
-                :subname "./resources/testdb.h2"}
-       config {:datastore (rjdbc/sql-database h2-spec)
-               :migrations (rjdbc/load-resources "migrations")}
-       query-data (fn [sld year month]
-                    (jdbc/query h2-spec ["select * from jyyb"]))]
-    (rag/migrate config)
-    (mount/start-with {#'fsl-cacm.db/query-data query-data})
-    ;;    (println (test :exclusions #{'fsl-cacm.db-test.product}))
-    (run-all-tests #"fsl-cacm.*")
-    (rag/rollback config)
-    (mount/stop)))
+;; (require '[clojure.java.jdbc :as jdbc])
+;; (require '[ragtime.jdbc :as rjdbc])
+;; (require '[ragtime.repl :as rag])
+;; (require '[mount.core :as mount])
+;; (require '[clojure.test :refer [run-all-tests]])
+;; (require '[fsl-cacm.db-test])
+;; (require '[fsl-cacm.handlers-test])
+;; (require '[fsl-cacm.core-test])
+;; (require '[fsl-cacm.io-test])
+;; (deftask test-with-mock-database
+;;   "Test with mock database."
+;;   []
+;;   (let [h2-spec {:classname "org.h2.Driver"
+;;                 :subprotocol "h2"
+;;                 :subname "./resources/testdb.h2"}
+;;        config {:datastore (rjdbc/sql-database h2-spec)
+;;                :migrations (rjdbc/load-resources "migrations")}
+;;        query-data (fn [sld year month]
+;;                     (jdbc/query h2-spec ["select * from jyyb"]))]
+;;     (rag/migrate config)
+;;     (mount/start-with {#'fsl-cacm.db/query-data query-data})
+;;     ;;    (println (test :exclusions #{'fsl-cacm.db-test.product}))
+;;     (run-all-tests #"fsl-cacm.*")
+;;     (rag/rollback config)
+;;     (mount/stop)))
 
 ;; (require '[clojure.java.jdbc :refer [query]])
 ;; (require '[mount.core :refer [defstate] :as mount])

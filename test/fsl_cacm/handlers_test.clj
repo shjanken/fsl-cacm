@@ -7,8 +7,7 @@
 
 (deftest test-get-data-not-exists
   (let [res (app (mock/request :get "/data/json/01?year=2018&month=2"))]
-    (is (= (:status res) 404))
-    (is (= (:body res) "resources not exists!"))))
+    (is (= (:status res) 404))))
 
 (deftest test-write-resources-file
   (let [res (app (mock/request :put "/data/json/01?year=2018&month=2"))]

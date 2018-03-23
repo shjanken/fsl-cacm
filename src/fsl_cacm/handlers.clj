@@ -29,9 +29,7 @@
        (slurp file-resource)
        (json/parse-string)
        (response/response))
-      (do
-        (db/query-data sld year month)
-        {:status 404 :body "resources not exists!"}))))
+      (response/not-found "resources not exists"))))
 
 (defn write-file!
   "query the data from database then write to resource file.
