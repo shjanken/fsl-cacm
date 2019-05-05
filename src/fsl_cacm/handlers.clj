@@ -46,5 +46,7 @@
   (->
    handler
    (wrap-json-response)
-   (wrap-cors :access-control-allow-origin [#"http://www.cacm.com.cn"])
-   (wrap-defaults api-defaults)))
+   (wrap-defaults api-defaults)
+   (wrap-cors :access-control-allow-origin [#".*cacm.com.cn.*" #".*localhost.*"]
+              :access-control-allow-methods [:get :post :put :delete])
+   ))

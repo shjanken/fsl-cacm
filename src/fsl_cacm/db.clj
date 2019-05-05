@@ -38,12 +38,13 @@
   [sld year month]
   (let [first-day (first-day year month)
         last-day (last-day year month)]
-    (jdbc/query spec ["select * from table(f_tj_jyyb_nb(?, ?, ?))" first-day last-day sld])))
+    (jdbc/query spec ["select * from table(f_tj_jyyb_2019(?, ?, ?))" first-day last-day sld])))
 
 (defstate query-data
   :start query-data)
 
 (comment
   (get-day "2018" "02" #'t/last-day-of-the-month)
-  (last-day "2018" "2")
+  (last-day "2019" "4")
+  (first-day "2019" "4")
   )
