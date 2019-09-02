@@ -19,7 +19,7 @@
 
                             ;; for database
                             [org.clojure/java.jdbc "0.7.5"]
-                            [com.oracle/ojdbc "6.0"]
+                            [com.oracle/ojdbc6 "11.2"]
                             [cheshire "5.8.0"]
 
                             ;; for test
