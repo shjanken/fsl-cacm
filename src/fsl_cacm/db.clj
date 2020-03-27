@@ -5,7 +5,7 @@
             [mount.core :refer [defstate]]))
 
 (def spec
-  {:dbtype "oracle.jdbc.OracleDriver"
+  {:classname "oracle.jdbc.OracleDriver"
    :subprotocol "oracle"
    :subname "thin:@10.0.0.203:1521/ora9"
    :user "cl"
