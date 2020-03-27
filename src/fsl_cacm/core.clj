@@ -6,7 +6,7 @@
 (defn -main
   "run the web server"
   [& args]
-  (run-jetty app {:port 3000 :host "10.0.0.201"}))
+  (run-jetty app {:port 3000}))
 
 (defn get-resource-dir
   []
