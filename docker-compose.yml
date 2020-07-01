@@ -1,0 +1,6 @@
+version: "3"
+
+services:
+    fsl-cacm:
+        image: sucem/fsl-cacm:0.1
+        command: ["java", "-jar", "/usr/local/fsl-cacm.jar"]
