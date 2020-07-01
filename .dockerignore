@@ -1,0 +1,9 @@
+target*
+.vagrant
+doc
+.envrc
+DockerFile
+*.md
+*.nix
+*.log
+Vagrantfile

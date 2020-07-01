@@ -1,7 +1,7 @@
 (def project 'fsl-cacm)
 (def version "0.1.0-SNAPSHOT")
 
-(set-env! :resource-paths #{"resources" "src"}
+(set-env! :resource-paths #{"resources" "src" "lib"}
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "RELEASE"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
@@ -19,7 +19,7 @@
 
                             ;; for database
                             [org.clojure/java.jdbc "0.7.5"]
-                            [oracle/ojdbc6 "11.2.0.3"]
+                            ;; [oracle/ojdbc6 "11.2.0.3"]
                             [cheshire "5.8.0"]
 
                             ;; for test
