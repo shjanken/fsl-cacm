@@ -16,6 +16,6 @@ RUN boot build --dir target
 ## 使用 openjdk 镜像来构建运行环境
 FROM openjdk:8
 
-COPY --from=builder /usr/local/app/target/fsl-cacm-0.1.0-SNAPSHOT-standalone /usr/local/fsl-cacm.jar
+COPY --from=builder /usr/local/app/target/fsl-cacm-0.1.0-SNAPSHOT-standalone.jar /usr/local/fsl-cacm.jar
 
 CMD ["java" "-jar" "/usr/local/fsl-cacm.jar"]
