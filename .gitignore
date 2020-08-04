@@ -10,6 +10,7 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
-/resources/data/
+/resources/data/**/*.json
 .vagrant/
 ubuntu-xenial-16.04-cloudimg-console.log
+resources/.nrepl-history
