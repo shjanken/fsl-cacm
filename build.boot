@@ -1,8 +1,8 @@
 (def project 'fsl-cacm)
 (def version "0.1.0-SNAPSHOT")
 
-(set-env! :resource-paths #{"resources" "src" "lib"}
-          :source-paths   #{"test"}
+(set-env! :resource-paths #{"resources" "src" }
+          :source-paths   #{"test" "lib"}
           :dependencies   '[[org.clojure/clojure "RELEASE"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
 
@@ -19,7 +19,7 @@
 
                             ;; for database
                             [org.clojure/java.jdbc "0.7.5"]
-                            ;; [oracle/ojdbc6 "11.2.0.3"]
+                            [com.oracle.jdbc/ojdbc6 "11.2.0.3"]
                             [cheshire "5.8.0"]
 
                             ;; for test
@@ -27,8 +27,7 @@
                             ;; [metosin/bat-test "0.4.0"]
                             [com.h2database/h2 "1.4.196" :scope "test"]
                             [ragtime "0.7.2" :scope "test"] ; for migration database
-                            [ring/ring-mock "0.3.2"]
-                            ])
+                            [ring/ring-mock "0.3.2"]])
 
 (require '[pandeiro.boot-http :refer :all])
 (require '[adzerk.boot-test :refer [test]])
