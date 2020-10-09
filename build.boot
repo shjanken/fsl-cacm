@@ -3,7 +3,7 @@
 
 (set-env! :resource-paths #{"resources" "src" }
           :source-paths   #{"test" "lib"}
-          :dependencies   '[[org.clojure/clojure "RELEASE"]
+          :dependencies   '[[org.clojure/clojure "1.10.1"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
 
                             ;; dependency added by me
@@ -19,7 +19,8 @@
 
                             ;; for database
                             [org.clojure/java.jdbc "0.7.5"]
-                            [com.oracle.jdbc/ojdbc6 "11.2.0.3"]
+                            ;; [com.oracle.database.jdbc/ojdbc8 "12.2.0.1"]
+                            [com.oracle/ojdbc6 "11.2"]
                             [cheshire "5.8.0"]
 
                             ;; for test
