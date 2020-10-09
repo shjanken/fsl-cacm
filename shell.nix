@@ -1,4 +1,5 @@
 { pkgs ? import <nixpkgs> {} }:
-  pkgs.mkShell {
-    buildInputs = [ pkgs.boot ];
+with pkgs;
+mkShell {
+    buildInputs = [ boot jdk14 ];
 }
