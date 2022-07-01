@@ -1,5 +1,5 @@
 { pkgs ? import <nixpkgs> {} }:
 with pkgs;
 mkShell {
-    buildInputs = [ boot jdk14 ];
+    buildInputs = [ boot jdk8 ];
 }
