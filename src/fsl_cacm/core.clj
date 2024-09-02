@@ -16,3 +16,6 @@
   "expmple: 2018 2 -> 2018-02-01.json"
   [year month sld]
   (str year "-" month "-" sld ".json"))
+
+(comment
+  (-main))
