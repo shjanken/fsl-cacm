@@ -14,3 +14,7 @@ pom.xml.asc
 .vagrant/
 ubuntu-xenial-16.04-cloudimg-console.log
 resources/.nrepl-history
+.calva/
+.clj-kondo/
+.cpcache/
+.lsp/
