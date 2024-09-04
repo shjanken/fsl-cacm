@@ -1,0 +1,14 @@
+{:data-file-path #profile {:default #or [#env FSL_FILE_PATH "./resources"]
+                           :dev     "target"}
+ :database       #profile {:default {:host     #or [#env FSL_DB_HOST "localhost"]
+                                     :port     #or [#env FSL_DB_PORT 1521]
+                                     :user     #or [#env FSL_DB_USER "test"]
+                                     :password #or [#env FSL_DB_PASSWORD "test"]
+                                     :dbtype   "oracle"
+                                     :dbname   #or [#env FLS_DB "ora9"]}
+                           :dev     #include "dev.database.edn"}
+ :server         #profile {:defualt {:port  #env FSL_SERVER_PORT
+                                     :join? true}
+                           :dev     {:port  3000
+                                     :join? false}}}
+

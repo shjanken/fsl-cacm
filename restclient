@@ -1,0 +1,4 @@
+## -*- restclient -*-
+
+# Test QueryData
+GET http://localhost:3000/data/json
