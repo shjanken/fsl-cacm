@@ -18,3 +18,5 @@ resources/.nrepl-history
 .clj-kondo/
 .cpcache/
 .lsp/
+
+resources/dev.database.edn
