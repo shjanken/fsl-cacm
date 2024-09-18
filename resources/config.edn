@@ -7,7 +7,7 @@
                                      :dbtype   "oracle"
                                      :dbname   #or [#env FLS_DB "ora9"]}
                            :dev     #include "dev.database.edn"}
- :server         #profile {:defualt {:port  #env FSL_SERVER_PORT
+ :server         #profile {:default {:port  #or [#env FSL_SERVER_PORT 3000]
                                      :join? true}
                            :dev     {:port  3000
                                      :join? false}}}

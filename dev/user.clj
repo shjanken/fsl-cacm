@@ -8,16 +8,15 @@
 
 (set-refresh-dirs "src")
 
-(defn update-dev-system-config
-  [system-config]
-  (assoc-in system-config [:config/config :profile] :dev))
+(defmethod ig/expand-key :config/config [k v]
+  {k (assoc v :profile :dev)})
 
 (defn start-dev-system
   []
-  (->> fsl/system-config
-       update-dev-system-config
-       ig/init
-       (reset! dev-system)))
+  (->
+   fsl/system-config
+   ig/expand
+   ig/init))
 
 (defn stop-dev-system
   []
