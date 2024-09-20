@@ -1,4 +1,10 @@
 ## -*- restclient -*-
 
-# Test QueryData
-GET http://localhost:3000/data/json
+## 
+PUT http://localhost:3000/data/json/01
+Content-Type: application/json
+
+{
+  "year": "2025",
+  "month": "01"
+}

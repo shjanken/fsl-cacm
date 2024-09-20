@@ -1,30 +1,66 @@
 (ns user
   (:require
-   [fsl-cacm.core :as fsl]
-   [clojure.tools.namespace.repl :refer [set-refresh-dirs]]
-   [integrant.core :as ig]))
+   [clojure.tools.namespace.repl :refer [refresh]]
+   [mount.core :as m]
+   [reitit.ring :as ring]
+   [reitit.ring.middleware.muuntaja :as muuntaja]
+   #_[reitit.ring.middleware.exception :as exception]
+   #_[expound.alpha :as expound]
+   [reitit.ring.coercion :as rrc]
+   #_[reitit.coercion.spec :as rcs]
+   [reitit.ring.middleware.dev :refer [print-request-diffs]]
+   [muuntaja.core :as muu]
 
-(def dev-system (atom nil))
+   [fsl-cacm.core :as core]
+   [fsl-cacm.report-data.handlers :as report-data]))
 
-(set-refresh-dirs "src")
+#_(defn coercion-error-handler [status]
+    (let [printer (expound/custom-printer {:theme :figwheel-theme, :print-specs? false})
+          handler (exception/create-coercion-handler status)]
+      (fn [exception request]
+        (printer (-> exception ex-data :problems))
+        (handler exception request))))
 
-(defmethod ig/expand-key :config/config [k v]
-  {k (assoc v :profile :dev)})
+(def dev-route-data
+  {:data {:muuntaja                    muu/instance
+          :reitit.middleware/transform print-request-diffs
+          :middleware                  [muuntaja/format-middleware
+                                        rrc/coerce-exceptions-middleware
+                                        rrc/coerce-request-middleware
+                                        rrc/coerce-response-middleware]}})
 
 (defn start-dev-system
   []
   (->
-   fsl/system-config
-   ig/expand
-   ig/init))
+   (m/with-args {:profile :dev})
+   (m/swap-states {#'core/app
+                   {:start
+                    #(ring/ring-handler
+                      (ring/router [report-data/api] dev-route-data))}})
+   (m/start))
+  :ready)
 
-(defn stop-dev-system
-  []
-  (ig/halt! @dev-system))
+(defn reset []
+  (m/stop)
+  (refresh)
+  (start-dev-system))
 
 (comment
-  (start-dev-system)
+  (reset)
 
-  @dev-system
+  report-data/api
+  core/app
 
-  (stop-dev-system))
+  (require '[reitit.core :as reitit])
+
+  (->
+   (ring/get-router core/app) 1
+   (reitit/match-by-path "/data/json/01"))
+
+  (core/app {:uri "/data/json/01"
+             :request-method :put
+             :body-params {:year "2024"
+                           :month "01"}
+             :headers {:content-type "application/x-www-form-urlencoded"}})
+
+  (slurp (:body *1)))

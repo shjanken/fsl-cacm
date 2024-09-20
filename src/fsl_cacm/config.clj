@@ -17,6 +17,14 @@
   []
   (:database config))
 
+(defn data-file-path
+  []
+  (:data-file-path config))
+
+(defn server
+  []
+  (:server config))
+
 (comment
   (->
    (m/only #{#'config})

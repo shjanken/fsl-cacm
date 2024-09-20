@@ -7,8 +7,10 @@
    [clj-time.format :as f]
    [mount.core :refer [defstate]]
    [clojure.java.io :as jio]
+   [fmnoise.flow :refer [then else]]
    [fsl-cacm.report-data.protocols :refer [query write ReportDataRepo DataWriter]]
-   [fsl-cacm.db :as db]))
+   [fsl-cacm.db :as db]
+   [muuntaja.core :as m]))
 
 (def not-found
   {:success false :msg "not found"})
@@ -113,13 +115,20 @@
       (ex-info "file already exists" {:file (.getAbsolutePath data-file)})
       data-file)))
 
+(defn- edn->json
+  [content]
+  (->>
+   content
+   (m/encode "application/json")
+   slurp))
+
 (defn- write-content
+  "write content to the file"
   [file content]
   (spit file content)
   (count content))
 
 (comment
-  (require '[fmnoise.flow :refer [then else]])
 
   (->>
    "target"
@@ -141,7 +150,30 @@
     ;;     | file is not exists, create a file and write the data content
     ;; | path is not exists
     ;;   | return write-error: directory is not exists
-    ))
+    (->>
+     path
+     (then path-exists?)
+     (then #(path-join % file-name))
+     (then #(write-content % (edn->json content)))
+     (else (fn [^Throwable err]
+             (->
+              (write-error (ex-message err))
+              (assoc :ex-data (ex-data err))))))))
+
+(comment
+  (->
+   (->LocalJsonFileWriter "target" "hello.txt")
+   (write "hello world")))
+
+(declare data-file-writer)
+
+(defstate data-file-writer
+  :start #(->LocalJsonFileWriter % %2))
+
+(defn write-data
+  "user writer write all data."
+  [writer data]
+  (write writer data))
 
 (comment
   (require '[fsl-cacm.config :as config])
