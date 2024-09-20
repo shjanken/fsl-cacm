@@ -5,6 +5,11 @@ PUT http://localhost:3000/data/json/01
 Content-Type: application/json
 
 {
-  "year": "2025",
+  "year": "2024",
   "month": "01"
 }
+
+
+## query data
+GET http://localhost:3000/data/json/01/2024/01
+Content-Type: application/json

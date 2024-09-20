@@ -101,6 +101,17 @@
 (defstate database-report-data-repo
   :start (->DataBaseReportDataRepo db/ds))
 
+(defrecord LocalFileReportDataRepo [path file]
+  ReportDataRepo
+  (query [_this _sld _year _month]
+    (let [file (jio/file path file)]
+      (if (.exists file) (slurp file) nil))))
+
+(declare local-file-report-data-repo)
+
+(defstate local-file-report-data-repo
+  :start (fn [path file] (->LocalFileReportDataRepo path file)))
+
 (defn- path-exists?
   [path]
   (let [path (jio/as-file path)]

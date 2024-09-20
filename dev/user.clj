@@ -11,7 +11,7 @@
    [reitit.ring.middleware.dev :refer [print-request-diffs]]
    [muuntaja.core :as muu]
 
-   [fsl-cacm.core :as core]
+   [fsl-cacm.core :as fsl-cacm]
    [fsl-cacm.report-data.handlers :as report-data]))
 
 #_(defn coercion-error-handler [status]
@@ -33,7 +33,7 @@
   []
   (->
    (m/with-args {:profile :dev})
-   (m/swap-states {#'core/app
+   (m/swap-states {#'fsl-cacm/app
                    {:start
                     #(ring/ring-handler
                       (ring/router [report-data/api] dev-route-data))}})
@@ -47,20 +47,7 @@
 
 (comment
   (reset)
-
-  report-data/api
-  core/app
-
-  (require '[reitit.core :as reitit])
-
-  (->
-   (ring/get-router core/app) 1
-   (reitit/match-by-path "/data/json/01"))
-
-  (core/app {:uri "/data/json/01"
-             :request-method :put
-             :body-params {:year "2024"
-                           :month "01"}
-             :headers {:content-type "application/x-www-form-urlencoded"}})
-
+  (fsl-cacm/app {:uri "/data/json/01/2024/01"
+                 :request-method :get
+                 :headers {:content-type "application/json"}})
   (slurp (:body *1)))

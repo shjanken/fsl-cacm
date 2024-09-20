@@ -27,6 +27,17 @@
                                           (resp/response {:success true
                                                           :message (str "write " cnt " to " file-name)}))))))
 
+(defn query-report-data
+  [{{:keys [sld year month]} :path-params}]
+  (let [file-name (str sld "_" year "_" month ".json")
+        repo      (report-data/local-file-report-data-repo (conf/data-file-path) file-name)
+        data      (report-data/fetch-data repo sld year month)]
+    (cond
+      (report-data/not-found? data) (resp/not-found data)
+      :else                         (->
+                                     (resp/response data)
+                                     (resp/header "Content-Type" "application/json")))))
+
 (comment
   (->
    (resp/bad-request "bad request")
@@ -54,18 +65,22 @@
 
 (s/def ::year string?)
 (s/def ::month string?)
-(s/def ::create-file-form-params (s/keys :req-un [::year ::month]))
 (s/def ::sld string?)
+
+(s/def ::create-file-form-params (s/keys :req-un [::year ::month]))
 (s/def ::create-file-path-params (s/keys :req-un [::sld]))
+(s/def ::query-report-data-params (s/keys :req-un [::sld ::year ::month]))
 
 (def api
-  ["/data"
-   {:middleware [parameters-middleware]}
-   ["/json/:sld"
+  ["/data/json" {:middleware [parameters-middleware]
+                 :coercion   rcs/coercion}
+   ["/:sld/:year/:month"
+    {:get {:summery   "display report data"
+           :handler   query-report-data
+           :parameter {:path ::query-report-data-params}}}]
+   ["/:sld"
     {:put {:summery    "create a data file in the server"
+           :handler    create-data-file
            :parameters {:path ::create-file-path-params
-                        :body ::create-file-form-params}
-           :handler    create-data-file}
-
-     :coercion rcs/coercion}]])
+                        :body ::create-file-form-params}}}]])
 
