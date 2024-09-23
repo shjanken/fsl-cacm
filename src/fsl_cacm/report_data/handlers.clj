@@ -18,17 +18,19 @@
         data                 (report-data/fetch-data report-data/database-report-data-repo sld year month)
         file-name            (str sld "_" year "_" month ".json")
         writer               (report-data/data-file-writer (conf/data-file-path) file-name)]
+    (prn [sld year month])
     (cond
-      (report-data/not-found? data)   (resp/not-found data)
       (report-data/invalid-sld? data) (resp/bad-request data)
+      (report-data/not-found? data)   (resp/not-found "not found")
       :else                           (let [cnt (report-data/write-data writer data)]
                                         (if (report-data/write-error? cnt)
-                                          (resp/response cnt)
+                                          (resp/bad-request cnt)
                                           (resp/response {:success true
                                                           :message (str "write " cnt " to " file-name)}))))))
 
 (defn query-report-data
   [{{:keys [sld year month]} :path-params}]
+  #break sld
   (let [file-name (str sld "_" year "_" month ".json")
         repo      (report-data/local-file-report-data-repo (conf/data-file-path) file-name)
         data      (report-data/fetch-data repo sld year month)]

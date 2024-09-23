@@ -1,9 +1,10 @@
-target*
-.vagrant
+
+
+target/*
 doc
 .envrc
 DockerFile
 *.md
 *.nix
 *.log
-Vagrantfile
+.dir-locals.el

@@ -47,7 +47,9 @@
 
 (comment
   (reset)
-  (fsl-cacm/app {:uri "/data/json/01/2024/01"
-                 :request-method :get
+  (m/running-states)
+  (fsl-cacm/app {:uri "/data/json/01"
+                 :request-method :put
+                 :body-params {:year "2024" :month "01"}
                  :headers {:content-type "application/json"}})
   (slurp (:body *1)))
