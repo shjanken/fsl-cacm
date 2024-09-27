@@ -25,11 +25,11 @@
 
     (testing "return write-error value if content is nil"
       (let [res (report-data/save! mock-writer nil)]
-        (is (= report-data/write-error res))))
+        (is (report-data/write-error? res))))
 
     (testing "write empty string should return write-error"
       (let [res (report-data/save! mock-writer "")]
-        (is (= report-data/write-error res))))))
+        (is (report-data/write-error? res))))))
 
 (deftest report-data-query-test
   (let [mock-repo (->MockRepo)]
@@ -39,9 +39,9 @@
 
     (testing "return not-found if data not found"
       (let [data (report-data/fetch-data mock-repo "01" "00" "00")]
-        (is (= report-data/not-found data))))
+        (is (report-data/not-found? data))))
 
     (testing "return invalid-sld if sld is invalid"
       (let [data (report-data/fetch-data mock-repo "12" "2024" "02")
-            err (report-data/invalid-sld "12")]
-        (is (= err data))))))
+            except-err (report-data/invalid-sld "12")]
+        (is (= except-err data))))))

@@ -1,0 +1,2 @@
+{:config/dev {:file-name "config.edn"
+              :profile   :dev}}

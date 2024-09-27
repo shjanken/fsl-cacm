@@ -1,6 +1,6 @@
 (ns fsl-cacm.config
   (:require
-   [mount.core :refer [defstate args] :as m]
+   [mount.core :refer [defstate] :as m]
    [aero.core :refer [read-config]]
    [clojure.java.io :refer [resource]]))
 

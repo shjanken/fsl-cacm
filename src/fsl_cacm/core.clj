@@ -29,5 +29,9 @@
   :start (run-jetty app (conf/server))
   :stop (.stop server))
 
-(defn main [& _args]
-  (m/start))
+(defn -main [& _]
+  (m/start)
+  (println (str "server running on " (:port (conf/server)))))
+
+(comment
+  (-main))

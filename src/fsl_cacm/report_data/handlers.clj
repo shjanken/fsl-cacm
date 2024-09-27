@@ -30,7 +30,6 @@
 
 (defn query-report-data
   [{{:keys [sld year month]} :path-params}]
-  #break sld
   (let [file-name (str sld "_" year "_" month ".json")
         repo      (report-data/local-file-report-data-repo (conf/data-file-path) file-name)
         data      (report-data/fetch-data repo sld year month)]
@@ -46,7 +45,7 @@
    (resp/header "Content-type" "application/html"))
 
   (require '[mount.core :as mnt])
-  (require '[fsl-cacm.report-data.protocols :refer [ReportDataRepo DataWriter]])
+  (require '[fsl-cacm.report-data.protocols :refer [ReportDataRepo]])
 
   (def mock-repo
     (reify ReportDataRepo

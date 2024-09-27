@@ -35,19 +35,22 @@
   [x]
   (= (:type x) :invalid-sld))
 
+(defn- check-sld
+  [sld]
+  (let [sld-sets #{"01" "99"}]
+    (contains? sld-sets sld)))
+
+;; ------------------
+;; service functions
+;; ------------------
+
 (defn save!
-  "query the data from repo.
-  if data is not nil, write the data to the repo"
+  "save the content use writer"
   [writer content]
   (let [cnt (write writer content)]
     (cond
       (<= cnt 0) (write-error "no data writtern")
       :else {:success true :msg cnt})))
-
-(defn- check-sld
-  [sld]
-  (let [sld-sets #{"01" "99"}]
-    (contains? sld-sets sld)))
 
 (defn fetch-data
   [repo sld year month]
@@ -57,6 +60,10 @@
         (nil? data) not-found
         :else data))
     (invalid-sld sld)))
+
+;; ------------------
+;; database functions
+;; ------------------
 
 (defn- get-day
   "Get the first or last day for the year month"
